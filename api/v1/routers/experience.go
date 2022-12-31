@@ -10,5 +10,5 @@ func SetupExperience(router *gin.RouterGroup) {
 	router.GET("/experiences", handlers.GetExperiences)
 	router.GET("/experiences/:id", handlers.GetExperienceByID)
 	router.POST("/experiences", handlers.PostExperience)
-
+	router.DELETE("/experiences/:id", handlers.DeleteExperience)
 }

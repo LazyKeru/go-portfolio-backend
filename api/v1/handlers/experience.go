@@ -28,12 +28,17 @@ func GetExperienceByID(c *gin.Context) {
 
 	if experience := storage.GetExperienceByID(id); experience == nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "experience not found"})
-		return
 	} else {
 		c.IndentedJSON(http.StatusOK, experience)
 	}
 }
 
 func DeleteExperience(c *gin.Context) {
-	//
+	id := c.Param("id")
+
+	if deleted_id := storage.RemoveExperience(id); deleted_id == "" {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "experience id not found"})
+	} else {
+		c.IndentedJSON(http.StatusOK, deleted_id)
+	}
 }
