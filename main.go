@@ -1,19 +1,12 @@
 package main
 
 import (
-	"golang-rest-api-portfolio/api/v1/routers"
-	"log"
+	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"golang-rest-api-portfolio/api/v1/routers"
 )
 
 func main() {
-	router := gin.Default()
-
-	routers.SetupPing(router.Group("/api"))
-	routers.SetupExperience(router.Group("/api/v1"))
-
-	if err := router.Run(":8080"); err != nil {
-		log.Fatal(err)
-	}
+	routers.SetupPing("/api")
+	http.ListenAndServe(":8080", nil)
 }

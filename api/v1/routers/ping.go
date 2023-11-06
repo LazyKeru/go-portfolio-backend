@@ -1,12 +1,10 @@
 package routers
 
 import (
+	"net/http"
 	"golang-rest-api-portfolio/api/v1/handlers"
-
-	"github.com/gin-gonic/gin"
 )
 
-func SetupPing(router *gin.RouterGroup) {
-	router.GET("/ping", handlers.Ping)
-
+func SetupPing(prefix string) {
+	http.HandleFunc(prefix+"/ping", handlers.Ping)
 }
