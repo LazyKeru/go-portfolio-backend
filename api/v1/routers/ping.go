@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"net/http"
 	"golang-rest-api-portfolio/api/v1/handlers"
+	"net/http"
 )
 
 func SetupPing(prefix string) {

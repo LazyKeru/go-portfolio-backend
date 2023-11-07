@@ -1,14 +1,31 @@
 package routers
 
 import (
-	"golang-rest-api-portfolio/api/v1/handlers"
+	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"golang-rest-api-portfolio/api/v1/handlers"
 )
 
-func SetupExperience(router *gin.RouterGroup) {
-	router.GET("/experiences", handlers.GetExperiences)
-	router.GET("/experiences/:id", handlers.GetExperienceByID)
-	router.POST("/experiences", handlers.PostExperience)
-	router.DELETE("/experiences/:id", handlers.DeleteExperience)
+func SetupExperience(prefix string) {
+	http.HandleFunc(prefix+"/experiences",
+		func(w http.ResponseWriter, r *http.Request) {
+			switch r.Method {
+			case "GET":
+				handlers.GetExperiences(w, r)
+			case "POST":
+				handlers.PostExperience(w, r)
+			}
+
+		})
+	http.Handle(prefix+"/experiences/",
+		http.StripPrefix(prefix+"/experiences/", http.HandlerFunc(
+			func(w http.ResponseWriter, r *http.Request) {
+				// TO DO: Check if the URL.Path is valid
+				switch r.Method {
+				case "GET":
+					handlers.GetExperienceByID(w, r)
+				case "DELETE":
+					handlers.DeleteExperience(w, r)
+				}
+			})))
 }
