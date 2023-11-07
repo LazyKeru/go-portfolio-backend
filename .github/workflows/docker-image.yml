@@ -10,9 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Check out the repo
+      uses: actions/checkout@v3
+
+    - name: Log in to Docker Hub
+      run: echo $DOCKER_PASS | docker login -u$DOCKER_USER --password-stdin $DOCKER_HOST
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKER_HOST: "docker.io"
+
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag $IMAGE_NAMESPACE/$IMAGE_REPOSITORY:$IMAGE_TAG
+      env:
+        IMAGE_NAMESPACE: "lazykeru"
+        IMAGE_REPOSITORY: "go-portfolio-backend"
+        IMAGE_TAG: "v1.0.0" # Will need a better solution
+
+    - name: Push the Docker image
+      run: docker push $IMAGE_NAMESPACE/$IMAGE_REPOSITORY:$IMAGE_TAG
       env:
         IMAGE_NAMESPACE: "lazykeru"
         IMAGE_REPOSITORY: "go-portfolio-backend"
