@@ -19,7 +19,7 @@ jobs:
         username: ${{ vars.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Check daemon
-      run: docker version --format '{{.Server.APIVersion}}'
+      run: /etc/docker/daemon.json
     - name: Check docker version
       run: docker version
     - name: Log in to Docker Hub
