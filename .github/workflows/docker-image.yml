@@ -19,12 +19,12 @@ jobs:
         username: ${{ vars.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     # Error Post "http://index.docker.io:2375/v1.24/auth": dial tcp 18.215.138.58:2375: i/o timeout
-    - name: Log in to Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login registry-1.docker.io --username "${{ vars.DOCKER_USERNAME }}" --password-stdin
-      env:
-        DOCKER_USER: ${{ vars.DOCKER_USERNAME }}
-        DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
-        DOCKER_HOST: "index.docker.io"
+    # - name: Log in to Docker Hub
+    #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login registry-1.docker.io --username "${{ vars.DOCKER_USERNAME }}" --password-stdin
+    #   env:
+    #     DOCKER_USER: ${{ vars.DOCKER_USERNAME }}
+    #     DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
+    #     DOCKER_HOST: "index.docker.io"
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag $IMAGE_NAMESPACE/$IMAGE_REPOSITORY:$IMAGE_TAG
