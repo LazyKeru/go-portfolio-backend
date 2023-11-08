@@ -18,6 +18,10 @@ jobs:
       with:
         username: ${{ vars.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Check daemon
+      run: docker version --format '{{.Server.APIVersion}}'
+    - name: Check docker version
+      run: docker version
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ vars.DOCKER_USERNAME }}" --password-stdin $DOCKER_HOST
       env:
