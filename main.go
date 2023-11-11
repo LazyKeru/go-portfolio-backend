@@ -13,7 +13,7 @@ func main() {
 	routers.SetupPing(router.Group("/api"))
 	routers.SetupExperience(router.Group("/api/v1"))
 
-	if err := router.Run(":8080"); err != nil {
+	if err := router.Run(":80"); err != nil {
 		log.Fatal(err)
 	}
 }

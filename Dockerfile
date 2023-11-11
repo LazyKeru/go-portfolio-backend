@@ -12,7 +12,7 @@ COPY ./api/ ./api/
 COPY ./assets/ ./assets/
 
 RUN go build -o /api main.go
-
-EXPOSE 8080
+  
+EXPOSE 80
 
 CMD ["/api"]
