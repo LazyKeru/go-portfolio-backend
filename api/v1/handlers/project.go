@@ -2,13 +2,13 @@ package handlers
 
 import (
 	"encoding/json"
-	"golang-rest-api-portfolio/api/infra/storage/experience"
+	"golang-rest-api-portfolio/api/infra/storage/project"
 	"golang-rest-api-portfolio/api/v1/models"
 	"net/http"
 )
 
-func GetExperiences(w http.ResponseWriter, r *http.Request) {
-	res, err := json.Marshal(experience.GetExperiences())
+func GetProjects(w http.ResponseWriter, r *http.Request) {
+	res, err := json.Marshal(project.GetProjects())
 
 	if err != nil {
 		w.WriteHeader(http.StatusServiceUnavailable)
@@ -19,26 +19,26 @@ func GetExperiences(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(res))
 }
 
-func PostExperience(w http.ResponseWriter, r *http.Request) {
-	var newExperience models.Experience
+func PostProject(w http.ResponseWriter, r *http.Request) {
+	var newProject models.Project
 
-	if err := json.NewDecoder(r.Body).Decode(&newExperience); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&newProject); err != nil {
 		return
 	}
 
-	experience.AddExperience(newExperience)
+	project.AddProject(newProject)
 	w.WriteHeader(http.StatusAccepted)
-	w.Write([]byte("Post JSON")) // Experience
+	w.Write([]byte("Post JSON")) // Project
 }
 
-func GetExperienceByID(w http.ResponseWriter, r *http.Request) {
+func GetProjectByID(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Path
 
-	if experience := experience.GetExperienceByID(id); experience == nil {
+	if project := project.GetProjectByID(id); project == nil {
 		w.WriteHeader(http.StatusBadRequest)
 	} else {
 		w.WriteHeader(http.StatusOK)
-		res, err := json.Marshal(experience)
+		res, err := json.Marshal(project)
 		if err != nil {
 			w.WriteHeader(http.StatusServiceUnavailable)
 			return
@@ -47,10 +47,10 @@ func GetExperienceByID(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func DeleteExperience(w http.ResponseWriter, r *http.Request) {
+func DeleteProject(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Path
 
-	if deleted_id := experience.RemoveExperience(id); deleted_id == "" {
+	if deleted_id := project.RemoveProject(id); deleted_id == "" {
 		w.WriteHeader(http.StatusBadRequest)
 	} else {
 		w.WriteHeader(http.StatusOK)
