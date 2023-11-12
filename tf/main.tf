@@ -24,6 +24,7 @@ resource "azurerm_linux_web_app" "backend" {
   service_plan_id     = azurerm_service_plan.backend.id
 
   site_config {
+    health_check_path = "/api/ping"
     application_stack {
       docker_image_name   = "lazykeru/go-portfolio-backend:v1.0.0"
       docker_registry_url = "https://index.docker.io"

@@ -25,7 +25,6 @@ jobs:
     #     DOCKER_USER: ${{ vars.DOCKER_USERNAME }}
     #     DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
     #     DOCKER_HOST: "index.docker.io"
-
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag $IMAGE_NAMESPACE/$IMAGE_REPOSITORY:$IMAGE_TAG
       env:
