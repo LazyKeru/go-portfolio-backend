@@ -1,9 +1,10 @@
 package models
 
-type Experience struct {
+type Project struct {
 	ID          string `json:"id"`
+	Type        string `json:"type"`
 	Title       string `json:"title"`
-	Start       Date   `json:"start"`
 	Description string `json:"description"`
+	Link        string `json:""`
 	Tags        []Tag  `json:"tags"`
 }
