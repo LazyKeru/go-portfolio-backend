@@ -23,12 +23,17 @@ func PostExperience(w http.ResponseWriter, r *http.Request) {
 	var newExperience models.Experience
 
 	if err := json.NewDecoder(r.Body).Decode(&newExperience); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
+	res, err := json.Marshal(newExperience)
+	if err != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		return
+	}
 	experience.AddExperience(newExperience)
-	w.WriteHeader(http.StatusAccepted)
-	w.Write([]byte("Post JSON")) // Experience
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte(res)) // Experience
 }
 
 func GetExperienceByID(w http.ResponseWriter, r *http.Request) {
@@ -53,7 +58,7 @@ func DeleteExperience(w http.ResponseWriter, r *http.Request) {
 	if deleted_id := experience.RemoveExperience(id); deleted_id == "" {
 		w.WriteHeader(http.StatusBadRequest)
 	} else {
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusNoContent)
 		res, err := json.Marshal(deleted_id)
 		if err != nil {
 			w.WriteHeader(http.StatusServiceUnavailable)
