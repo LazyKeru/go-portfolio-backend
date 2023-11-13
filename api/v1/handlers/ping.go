@@ -1,11 +1,10 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
-func Ping(c *gin.Context) {
-	c.JSON(http.StatusOK, "pong")
+func Ping(w http.ResponseWriter, r *http.Request){
+	fmt.Fprintln(w, "pong")
 }
