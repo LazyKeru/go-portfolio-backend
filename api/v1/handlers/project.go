@@ -15,7 +15,7 @@ func GetProjects(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte(res))
 }
 
@@ -23,12 +23,17 @@ func PostProject(w http.ResponseWriter, r *http.Request) {
 	var newProject models.Project
 
 	if err := json.NewDecoder(r.Body).Decode(&newProject); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
+	res, err := json.Marshal(newProject)
+	if err != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		return
+	}
 	project.AddProject(newProject)
-	w.WriteHeader(http.StatusAccepted)
-	w.Write([]byte("Post JSON")) // Project
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte(res)) // Project
 }
 
 func GetProjectByID(w http.ResponseWriter, r *http.Request) {
@@ -36,6 +41,7 @@ func GetProjectByID(w http.ResponseWriter, r *http.Request) {
 
 	if project := project.GetProjectByID(id); project == nil {
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	} else {
 		w.WriteHeader(http.StatusOK)
 		res, err := json.Marshal(project)
