@@ -9,7 +9,8 @@ import (
 )
 
 const GITHUB_API_URL = "https://api.github.com"
-const GITHUB_API_BEARER_TOKEN = "TOKEN"
+
+var GITHUB_API_BEARER_TOKEN string
 
 type graphqlRequest struct {
 	Query string `json:"query"`
