@@ -7,14 +7,34 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Check out the repo
+      uses: actions/checkout@v3
+    - 
+      name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    # Error Post "http://index.docker.io:2375/v1.24/auth": dial tcp 18.215.138.58:2375: i/o timeout
+    # - name: Log in to Docker Hub
+    #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login registry-1.docker.io --username "${{ vars.DOCKER_USERNAME }}" --password-stdin
+    #   env:
+    #     DOCKER_USER: ${{ vars.DOCKER_USERNAME }}
+    #     DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
+    #     DOCKER_HOST: "index.docker.io"
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag $(IMAGE_REGISTRY)/$(IMAGE_NAMESPACE)/$(IMAGE_REPOSITORY):$(IMAGE_TAG)
+      run: docker build . --file Dockerfile --tag $IMAGE_NAMESPACE/$IMAGE_REPOSITORY:$IMAGE_TAG
       env:
-        IMAGE_REGISTRY: "docker.io"
-        IMAGE_NAMESPACE: "lazykeru"
-        IMAGE_REPOSITORY: "go-portfolio-backend"
-        IMAGE_TAG: ${{github.run_number}} # Will need a better solution
+        IMAGE_NAMESPACE: ${{ vars.DOCKER_USERNAME }}
+        IMAGE_REPOSITORY: ${{ vars.IMAGE_REPOSITORY }}
+        IMAGE_TAG: "v1.0.0" # Will need a better solution
+
+    - name: Push the Docker image
+      run: docker push $IMAGE_NAMESPACE/$IMAGE_REPOSITORY:$IMAGE_TAG
+      env:
+        IMAGE_NAMESPACE: ${{ vars.DOCKER_USERNAME }}
+        IMAGE_REPOSITORY: ${{ vars.IMAGE_REPOSITORY }}
+        IMAGE_TAG: "v1.0.0" # Will need a better solution
