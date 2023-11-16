@@ -1,4 +1,4 @@
-FROM golang:1.19-alpine AS build
+FROM golang:1.19-alpine AS build-stage
 
 WORKDIR /app
 
@@ -10,17 +10,15 @@ RUN go mod download
 COPY main.go .
 COPY ./api/ ./api/
 
-RUN go build -o /api main.go
+RUN go build -o /backend main.go
 
-FROM gcr.io/distroless/base-debian11 AS release
+FROM golang:1.19-alpine AS release-stage
 
 WORKDIR /
 
-COPY --from=build /api /api
 COPY ./assets/ ./assets/
+COPY --from=build-stage /backend /backend
 
 EXPOSE 80
 
-USER nonroot:nonroot
-
-ENTRYPOINT ["/api"]
+ENTRYPOINT ["/backend"]
