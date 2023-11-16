@@ -1,4 +1,4 @@
-FROM golang:1.19-alpine
+FROM golang:1.19-alpine AS build
 
 WORKDIR /app
 
@@ -9,10 +9,18 @@ RUN go mod download
 
 COPY main.go .
 COPY ./api/ ./api/
-COPY ./assets/ ./assets/
 
 RUN go build -o /api main.go
-  
+
+FROM gcr.io/distroless/base-debian11 AS release
+
+WORKDIR /
+
+COPY --from=build /api /api
+COPY ./assets/ ./assets/
+
 EXPOSE 80
 
-CMD ["/api"]
+USER nonroot:nonroot
+
+ENTRYPOINT ["/api"]
