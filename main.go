@@ -19,7 +19,6 @@ func main() {
 
 	flag.Parse()
 
-	fmt.Print("my api" + *github_api)
 	if res, err := regexp.MatchString("^ghp_[a-zA-Z0-9]{36}$", *github_api); res != true || err != nil {
 		log.Fatal("Need to have a valid github api key")
 	}
