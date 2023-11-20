@@ -11,3 +11,10 @@ func JsonHeaderMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		next(w, r)
 	})
 }
+
+func CorsHeaderMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		next(w, r)
+	})
+}
