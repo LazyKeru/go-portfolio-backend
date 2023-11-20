@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "rg" {
-  location = var.ressource_group_location
+  location = var.resource_group_location
   name     = var.resource_group_name
 }
 
@@ -8,7 +8,7 @@ resource "azurerm_service_plan" "backend" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   os_type             = "Linux"
-  sku_name            = "P1v2"
+  sku_name            = "F1"
 }
 
 resource "azurerm_app_service_custom_hostname_binding" "domain" {
