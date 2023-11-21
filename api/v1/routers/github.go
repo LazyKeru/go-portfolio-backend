@@ -8,11 +8,12 @@ import (
 
 func SetupGithub(prefix string) {
 	http.HandleFunc(prefix+"/contribution",
-		middleware.JsonHeaderMiddleware(
-			func(w http.ResponseWriter, r *http.Request) {
-				switch r.Method {
-				case "GET":
-					handlers.GetContribution(w, r)
-				}
-			}))
+		middleware.CorsHeaderMiddleware(
+			middleware.JsonHeaderMiddleware(
+				func(w http.ResponseWriter, r *http.Request) {
+					switch r.Method {
+					case "GET":
+						handlers.GetContribution(w, r)
+					}
+				})))
 }
